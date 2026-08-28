@@ -1,9 +1,13 @@
 const authService = require('../services/authService');
 
+// In production the frontend (Vercel) and API (Railway) are on different
+// domains, so the auth cookie must be SameSite=None + Secure to be sent
+// cross-site. 'lax' stays for local dev where both run on localhost.
+const IS_PROD = process.env.NODE_ENV === 'production';
 const COOKIE_OPTIONS = {
   httpOnly: true,
-  sameSite: 'lax',
-  secure: process.env.NODE_ENV === 'production',
+  sameSite: IS_PROD ? 'none' : 'lax',
+  secure: IS_PROD,
   maxAge: 7 * 24 * 60 * 60 * 1000,
 };
 

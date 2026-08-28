@@ -6,7 +6,7 @@ async function findAdminByEmail(email) {
 }
 
 async function getConfig() {
-  const result = await db.query('SELECT * FROM admin_config LIMIT 1');
+  const result = await db.query('SELECT * FROM admin_config ORDER BY id LIMIT 1');
   return result.rows[0];
 }
 

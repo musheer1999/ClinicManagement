@@ -1,12 +1,13 @@
 import React from 'react';
-import { Btn, StatusBadge, Spinner, PageHeader } from '../../../components/ui/index';
+import { Btn, Badge, StatusBadge, Spinner, PageHeader } from '../../../components/ui/index';
 import useSettings from './useSettings';
 
 function SettingsPage() {
-  const { form, update, clinic, globalPrice, loading, fetching, error, saved, submit } = useSettings();
+  const { form, update, clinic, loading, fetching, error, saved, submit } = useSettings();
 
   if (fetching) return <div style={{ display: 'flex', justifyContent: 'center', padding: 60 }}><Spinner size={36} /></div>;
 
+  const isFreeBeta = Boolean(clinic?.is_free_for_all);
   const daysUntilExpiry = clinic?.subscription_expiry
     ? Math.ceil((new Date(clinic.subscription_expiry) - new Date()) / (1000 * 60 * 60 * 24))
     : null;
@@ -15,7 +16,7 @@ function SettingsPage() {
     <div className="page fade-in">
       <PageHeader title="Account Settings" subtitle="Manage your clinic profile and subscription." />
 
-      {daysUntilExpiry !== null && daysUntilExpiry <= 7 && daysUntilExpiry >= 0 && (
+      {!isFreeBeta && daysUntilExpiry !== null && daysUntilExpiry <= 7 && daysUntilExpiry >= 0 && (
         <div className="sub-banner">⚠ Your subscription expires in {daysUntilExpiry} day{daysUntilExpiry !== 1 ? 's' : ''}. Please contact admin to renew.</div>
       )}
 
@@ -58,10 +59,12 @@ function SettingsPage() {
           <h2 className="card-title" style={{ marginBottom: 16 }}>Subscription</h2>
           <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-              <span className="cell-muted">Status</span>
-              <StatusBadge status={clinic?.subscription_status || 'active'} />
+              <span className="cell-muted">Plan</span>
+              {isFreeBeta
+                ? <Badge tone="blue" dot>Free Beta</Badge>
+                : <StatusBadge status={clinic?.subscription_status || 'active'} />}
             </div>
-            {clinic?.subscription_expiry && (
+            {!isFreeBeta && clinic?.subscription_expiry && (
               <div style={{ display: 'flex', justifyContent: 'space-between' }}>
                 <span className="cell-muted">Expiry</span>
                 <span style={{ fontWeight: 500 }}>{new Date(clinic.subscription_expiry).toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' })}</span>
@@ -71,20 +74,26 @@ function SettingsPage() {
               <span className="cell-muted">Email</span>
               <span style={{ fontWeight: 500, fontSize: 13 }}>{clinic?.email}</span>
             </div>
-            <div style={{ borderTop: '1px solid var(--slate-100)', margin: '4px 0' }} />
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-              <span className="cell-muted">Monthly Price</span>
-              <span style={{ fontWeight: 700, color: 'var(--primary)' }}>₹{globalPrice}</span>
-            </div>
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-              <span className="cell-muted">Plan Type</span>
-              {clinic?.custom_price != null
-                ? <span style={{ fontSize: 12, fontWeight: 600, background: '#ede9fe', color: '#7c3aed', padding: '2px 8px', borderRadius: 4 }}>Custom Plan</span>
-                : <span style={{ fontSize: 12, fontWeight: 600, background: 'var(--slate-100)', color: 'var(--slate-500)', padding: '2px 8px', borderRadius: 4 }}>Standard Plan</span>}
-            </div>
+            {!isFreeBeta && (
+              <>
+                <div style={{ borderTop: '1px solid var(--slate-100)', margin: '4px 0' }} />
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                  <span className="cell-muted">Monthly Price</span>
+                  <span style={{ fontWeight: 700, color: 'var(--primary)' }}>₹{clinic?.effective_price ?? '—'}</span>
+                </div>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                  <span className="cell-muted">Plan Type</span>
+                  {clinic?.custom_price != null
+                    ? <span style={{ fontSize: 12, fontWeight: 600, background: '#ede9fe', color: '#7c3aed', padding: '2px 8px', borderRadius: 4 }}>Custom Plan</span>
+                    : <span style={{ fontSize: 12, fontWeight: 600, background: 'var(--slate-100)', color: 'var(--slate-500)', padding: '2px 8px', borderRadius: 4 }}>Standard Plan</span>}
+                </div>
+              </>
+            )}
           </div>
           <div style={{ marginTop: 20, paddingTop: 16, borderTop: '1px solid var(--slate-100)', fontSize: 13, color: 'var(--slate-400)' }}>
-            To renew or upgrade your subscription, please contact <a href="mailto:admin@clinicdesk.in">admin@clinicdesk.in</a>
+            {isFreeBeta
+              ? <>ClinicDesk is completely free during the beta period — no charges, full access. For any questions, contact <a href="mailto:admin@clinicdesk.in">admin@clinicdesk.in</a></>
+              : <>To renew or upgrade your subscription, please contact <a href="mailto:admin@clinicdesk.in">admin@clinicdesk.in</a></>}
           </div>
         </div>
       </div>

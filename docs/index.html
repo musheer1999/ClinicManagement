@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ClinicDesk — Clinic Management Software for India</title>
+<style>
+  :root {
+    --ink: #0f172a;
+    --muted: #64748b;
+    --line: #e2e8f0;
+    --brand: #2563eb;
+    --bg: #ffffff;
+    --bg-soft: #f8fafc;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Inter, Roboto, sans-serif;
+    color: var(--ink);
+    background: var(--bg);
+    line-height: 1.6;
+  }
+  header {
+    padding: 20px 24px;
+    border-bottom: 1px solid var(--line);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  header .brand { font-weight: 700; font-size: 18px; }
+  nav a {
+    color: var(--muted);
+    text-decoration: none;
+    margin-left: 20px;
+    font-size: 14px;
+  }
+  nav a:hover { color: var(--brand); }
+  .hero {
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 64px 24px 40px;
+    text-align: center;
+  }
+  .hero h1 { font-size: 34px; margin-bottom: 12px; }
+  .hero p { color: var(--muted); font-size: 17px; }
+  .badge {
+    display: inline-block;
+    background: #eff6ff;
+    color: var(--brand);
+    font-size: 12px;
+    font-weight: 600;
+    padding: 4px 10px;
+    border-radius: 999px;
+    margin-bottom: 16px;
+  }
+  section {
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 32px 24px;
+    border-top: 1px solid var(--line);
+  }
+  section h2 { font-size: 22px; margin-bottom: 12px; }
+  section h3 { font-size: 16px; margin: 20px 0 6px; }
+  .features {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+    margin-top: 8px;
+  }
+  .feature {
+    background: var(--bg-soft);
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    padding: 16px;
+  }
+  .feature b { display: block; margin-bottom: 4px; font-size: 14px; }
+  .feature span { color: var(--muted); font-size: 13px; }
+  .price-card {
+    background: var(--bg-soft);
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    padding: 24px;
+    text-align: center;
+    margin-top: 12px;
+  }
+  .price-card .amount { font-size: 32px; font-weight: 700; }
+  .price-card .amount span { font-size: 14px; font-weight: 400; color: var(--muted); }
+  .price-card p { color: var(--muted); font-size: 13px; margin-top: 8px; }
+  ul { padding-left: 20px; color: var(--ink); font-size: 14.5px; }
+  li { margin-bottom: 6px; }
+  .muted { color: var(--muted); font-size: 14.5px; }
+  footer {
+    text-align: center;
+    padding: 32px 24px 48px;
+    color: var(--muted);
+    font-size: 13px;
+  }
+  a.contact { color: var(--brand); text-decoration: none; }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="brand">ClinicDesk</div>
+  <nav>
+    <a href="#pricing">Pricing</a>
+    <a href="#refund">Refund Policy</a>
+    <a href="#terms">Terms</a>
+    <a href="#privacy">Privacy</a>
+    <a href="#contact">Contact</a>
+  </nav>
+</header>
+
+<div class="hero">
+  <div class="badge">Built for Indian clinics</div>
+  <h1>Digitize your clinic's patient records</h1>
+  <p>ClinicDesk is a subscription-based SaaS platform that helps clinics manage patients, visits, and prescriptions digitally — with instant PDF report generation and multi-clinic data isolation.</p>
+</div>
+
+<section id="product">
+  <h2>What ClinicDesk does</h2>
+  <div class="features">
+    <div class="feature"><b>Patient Records</b><span>Search, add, and manage unlimited patients with a unique per-clinic ID.</span></div>
+    <div class="feature"><b>Digital Visits</b><span>Record diagnosis, prescriptions, and medicines for every visit.</span></div>
+    <div class="feature"><b>PDF Reports</b><span>One-click, print-ready A4 reports with your clinic's letterhead.</span></div>
+    <div class="feature"><b>Revisit Tracking</b><span>Dashboard reminders for upcoming patient revisits.</span></div>
+  </div>
+</section>
+
+<section id="pricing">
+  <h2>Pricing</h2>
+  <div class="price-card">
+    <div class="amount">₹999 <span>/ month per clinic</span></div>
+    <p>Billed monthly. Includes unlimited patients, visits, and PDF reports for one clinic account. No setup fee.</p>
+  </div>
+  <p class="muted" style="margin-top:12px;">Custom pricing is available for early and high-volume clinics — contact us below.</p>
+</section>
+
+<section id="refund">
+  <h2>Refund &amp; Cancellation Policy</h2>
+  <ul>
+    <li>Subscriptions are billed monthly in advance and can be cancelled anytime — cancellation stops the next billing cycle, with continued access until the end of the current paid period.</li>
+    <li>If a payment is charged in error or a duplicate charge occurs, contact us within 7 days of the transaction for a full refund.</li>
+    <li>Refund requests for service issues are reviewed case by case; approved refunds are processed to the original payment method within 5–7 business days.</li>
+    <li>No refunds are issued for partial months of usage on voluntary cancellation.</li>
+  </ul>
+</section>
+
+<section id="terms">
+  <h2>Terms of Service</h2>
+  <p class="muted">By subscribing to ClinicDesk, a clinic agrees to the following:</p>
+  <ul>
+    <li>ClinicDesk is provided on a subscription basis for managing clinic patient records and is intended for use by licensed healthcare practices.</li>
+    <li>The clinic is responsible for the accuracy of data entered and for maintaining the confidentiality of its login credentials.</li>
+    <li>Access is granted for the duration of an active, paid subscription period; access may be suspended if a subscription lapses.</li>
+    <li>ClinicDesk may update these terms from time to time; continued use after changes constitutes acceptance.</li>
+  </ul>
+</section>
+
+<section id="privacy">
+  <h2>Privacy Policy</h2>
+  <p class="muted">ClinicDesk stores clinic and patient data (names, contact details, visit and prescription records) to provide the service.</p>
+  <ul>
+    <li>Each clinic's data is isolated and accessible only to that clinic's authenticated users — no cross-clinic data sharing.</li>
+    <li>Data is used solely to operate the platform (patient records, PDF generation, OTP login) and is not sold to third parties.</li>
+    <li>Payment information is processed by our payment partner (Razorpay) and is not stored on ClinicDesk's servers.</li>
+    <li>Clinics may request export or deletion of their data by contacting us below.</li>
+  </ul>
+</section>
+
+<section id="contact">
+  <h2>Contact</h2>
+  <p class="muted">Questions about billing, refunds, or the product:</p>
+  <p><a class="contact" href="mailto:musheerahmad.710@gmail.com">musheerahmad.710@gmail.com</a></p>
+</section>
+
+<footer>
+  © 2026 ClinicDesk. All rights reserved.
+</footer>
+
+</body>
+</html>

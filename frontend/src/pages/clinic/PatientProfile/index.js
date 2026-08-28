@@ -2,6 +2,7 @@ import React from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { Btn, Avatar, Badge, Spinner, EmptyState, PageHeader } from '../../../components/ui/index';
 import usePatientProfile from './usePatientProfile';
+import { downloadVisitPdf } from '../../../utils/downloadPdf';
 
 function PatientProfilePage() {
   const { id } = useParams();
@@ -88,7 +89,7 @@ function PatientProfilePage() {
                   <div className="visit-actions">
                     <Btn variant="secondary" size="sm" onClick={() => navigate(`/visits/${v.id}`)}>View Details</Btn>
                     <Btn variant="secondary" size="sm" onClick={() => navigate(`/visits/${v.id}/edit`)}>Edit</Btn>
-                    <Btn variant="ghost" size="sm" onClick={() => { const link = document.createElement('a'); link.href = `http://localhost:5000/api/visits/${v.id}/pdf`; link.setAttribute('download', 'ClinicDesk-Report.pdf'); document.body.appendChild(link); link.click(); document.body.removeChild(link); }}>Download PDF</Btn>
+                    <Btn variant="ghost" size="sm" onClick={() => downloadVisitPdf(v.id)}>Download PDF</Btn>
                   </div>
                 </div>
                 <p style={{ marginTop: 10, color: 'var(--slate-700)', lineHeight: 1.55 }}>{v.diagnosis || '—'}</p>

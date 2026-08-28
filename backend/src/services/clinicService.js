@@ -1,4 +1,5 @@
 const clinicRepo = require('../repositories/clinicRepository');
+const adminRepo = require('../repositories/adminRepository');
 
 function fail(message, status = 400) {
   const err = new Error(message);
@@ -9,7 +10,16 @@ function fail(message, status = 400) {
 async function getClinic(id) {
   const clinic = await clinicRepo.findById(id);
   if (!clinic) fail('Clinic not found.', 404);
-  return clinic;
+
+  // Attach billing context so the frontend never needs admin endpoints:
+  // is_free_for_all = platform-wide free (beta) mode, effective_price = what
+  // this clinic would pay (custom price if set, else global price).
+  const config = await adminRepo.getConfig();
+  return {
+    ...clinic,
+    is_free_for_all: config?.is_free_for_all ?? false,
+    effective_price: clinic.custom_price ?? config?.subscription_price ?? null,
+  };
 }
 
 async function updateClinic(id, data) {

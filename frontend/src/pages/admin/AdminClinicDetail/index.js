@@ -56,6 +56,9 @@ function AdminClinicDetailPage() {
             <div className="field">
               <label className="field-label">Expiry Date</label>
               <input className="input" type="date" value={form.subscription_expiry} onChange={e => update('subscription_expiry', e.target.value)} />
+              {form.subscription_status === 'active' && (
+                <span style={{ fontSize: 12, color: 'var(--slate-400)' }}>Required, and must be today or later, while status is Active.</span>
+              )}
             </div>
             <div style={{ marginTop: 8, marginBottom: 12 }}>
               <span className="cell-muted" style={{ fontSize: 13 }}>Current: </span>

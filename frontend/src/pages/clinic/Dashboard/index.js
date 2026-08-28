@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../../context/AuthContext';
 import { Btn, Badge, SkeletonRow, EmptyState, PageHeader } from '../../../components/ui/index';
 import useDashboard from './useDashboard';
+import { downloadVisitPdf } from '../../../utils/downloadPdf';
 
 function StatCard({ icon, label, value, bg, fg, trend, trendFlat, loading }) {
   return (
@@ -37,7 +38,7 @@ function DashboardPage() {
         <StatCard loading={loading} icon={<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg>} label="Total Patients" value={stats?.totalPatients ?? '—'} bg="#eff6ff" fg="#2563eb" trend="All registered patients" trendFlat />
         <StatCard loading={loading} icon={<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>} label="Today's Visits" value={stats?.todayVisits ?? '—'} bg="#ecfdf5" fg="#059669" trend="Recorded today" trendFlat />
         <StatCard loading={loading} icon={<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg>} label="Upcoming Revisits" value={stats?.upcomingRevisits ?? '—'} bg="#fffbeb" fg="#d97706" trend="Next 14 days" trendFlat />
-        <StatCard loading={loading} icon={<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>} label="Subscription" value={user?.subscription_status || 'Active'} bg="#f5f3ff" fg="#7c3aed" trend={user?.subscription_expiry ? `Expires ${new Date(user.subscription_expiry).toLocaleDateString('en-IN')}` : ''} trendFlat />
+        <StatCard loading={loading} icon={<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>} label="Subscription" value={user?.is_free_for_all ? 'Free Beta' : (user?.subscription_status || 'Active')} bg="#f5f3ff" fg="#7c3aed" trend={user?.is_free_for_all ? 'Free during beta' : (user?.subscription_expiry ? `Expires ${new Date(user.subscription_expiry).toLocaleDateString('en-IN')}` : '')} trendFlat />
       </div>
 
       <div className="card-head">
@@ -67,7 +68,7 @@ function DashboardPage() {
                     <td>
                       <div className="table-actions">
                         <Btn variant="secondary" size="sm" onClick={() => navigate(`/visits/${v.id}`)}>View</Btn>
-                        <Btn variant="ghost" size="sm" onClick={() => { const link = document.createElement('a'); link.href = `http://localhost:5000/api/visits/${v.id}/pdf`; link.setAttribute('download', 'ClinicDesk-Report.pdf'); document.body.appendChild(link); link.click(); document.body.removeChild(link); }}>PDF</Btn>
+                        <Btn variant="ghost" size="sm" onClick={() => downloadVisitPdf(v.id)}>PDF</Btn>
                       </div>
                     </td>
                   </tr>

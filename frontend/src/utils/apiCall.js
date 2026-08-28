@@ -1,4 +1,4 @@
-const API_URL = process.env.REACT_APP_API_URL || '/api';
+export const API_URL = process.env.REACT_APP_API_URL || '/api';
 
 async function apiCall(method, endpoint, body = null) {
   const headers = { 'Content-Type': 'application/json' };

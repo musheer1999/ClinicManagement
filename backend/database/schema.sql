@@ -80,10 +80,13 @@ CREATE TABLE IF NOT EXISTS admins (
   created_at TIMESTAMP DEFAULT NOW()
 );
 
--- Seed default admin config
-INSERT INTO admin_config (subscription_price, is_free_for_all)
-VALUES (999.00, false)
-ON CONFLICT DO NOTHING;
+-- Seed default admin config (singleton row, id = 1).
+-- Explicit id + conflict target so re-running this file never creates duplicates.
+-- is_free_for_all = true while ClinicDesk is in free beta; flip to false (via
+-- the Admin Console) when paid subscriptions launch.
+INSERT INTO admin_config (id, subscription_price, is_free_for_all)
+VALUES (1, 999.00, true)
+ON CONFLICT (id) DO NOTHING;
 
 -- Seed default admin (change email as needed)
 INSERT INTO admins (email)

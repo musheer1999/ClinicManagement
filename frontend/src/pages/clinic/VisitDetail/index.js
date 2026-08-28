@@ -2,6 +2,7 @@ import React from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { Btn, Badge, Spinner, PageHeader } from '../../../components/ui/index';
 import useVisitDetail from './useVisitDetail';
+import { downloadVisitPdf } from '../../../utils/downloadPdf';
 
 function VisitDetailPage() {
   const { id } = useParams();
@@ -23,7 +24,7 @@ function VisitDetailPage() {
         actions={
           <>
             <Btn variant="secondary" onClick={() => navigate(`/visits/${id}/edit`)}>Edit Visit</Btn>
-            <Btn onClick={() => { const link = document.createElement('a'); link.href = `http://localhost:5000/api/visits/${id}/pdf`; link.setAttribute('download', 'ClinicDesk-Report.pdf'); document.body.appendChild(link); link.click(); document.body.removeChild(link); }}>
+            <Btn onClick={() => downloadVisitPdf(id)}>
               ⬇ Download PDF Report
             </Btn>
           </>

@@ -2,7 +2,7 @@ const db = require('../config/database');
 
 async function subscriptionMiddleware(req, res, next) {
   try {
-    const config = await db.query('SELECT is_free_for_all FROM admin_config LIMIT 1');
+    const config = await db.query('SELECT is_free_for_all FROM admin_config ORDER BY id LIMIT 1');
     if (config.rows[0]?.is_free_for_all) return next();
 
     const clinic = await db.query(
