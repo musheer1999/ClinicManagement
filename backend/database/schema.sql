@@ -33,14 +33,17 @@ CREATE TABLE IF NOT EXISTS otp_tokens (
 CREATE TABLE IF NOT EXISTS patients (
   id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
   clinic_id UUID REFERENCES clinics(id) ON DELETE CASCADE,
-  unique_patient_id VARCHAR(20) UNIQUE NOT NULL,
+  unique_patient_id VARCHAR(20) NOT NULL,
   name VARCHAR(255) NOT NULL,
   age INTEGER,
   gender VARCHAR(10) CHECK (gender IN ('male', 'female', 'other')),
   phone VARCHAR(20) NOT NULL,
   blood_group VARCHAR(5),
   address TEXT,
-  created_at TIMESTAMP DEFAULT NOW()
+  created_at TIMESTAMP DEFAULT NOW(),
+  -- Patient IDs (PT-0001, ...) restart per clinic, so uniqueness is per clinic,
+  -- not global.
+  UNIQUE (clinic_id, unique_patient_id)
 );
 
 CREATE INDEX IF NOT EXISTS idx_patients_phone ON patients(phone);

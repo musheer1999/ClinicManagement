@@ -1,12 +1,14 @@
 const db = require('../config/database');
 
 async function generateUniquePatientId(clinicId) {
+  // Highest existing PT-XXXX number for this clinic + 1 (COUNT+1 would repeat
+  // numbers if a patient were ever removed).
   const result = await db.query(
-    `SELECT COUNT(*) FROM patients WHERE clinic_id = $1`,
+    `SELECT COALESCE(MAX(CAST(SUBSTRING(unique_patient_id FROM 4) AS INTEGER)), 0) + 1 AS next
+     FROM patients WHERE clinic_id = $1`,
     [clinicId]
   );
-  const count = parseInt(result.rows[0].count) + 1;
-  return `PT-${String(count).padStart(4, '0')}`;
+  return `PT-${String(result.rows[0].next).padStart(4, '0')}`;
 }
 
 async function findByClinic(clinicId, search = '') {

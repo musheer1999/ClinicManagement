@@ -22,8 +22,16 @@ async function createPatient(clinicId, data) {
   const { name, age, gender, phone, blood_group, address } = data;
   if (!name || !phone) fail('Patient name and phone are required.');
 
-  const unique_patient_id = await patientRepo.generateUniquePatientId(clinicId);
-  return patientRepo.create({ clinic_id: clinicId, unique_patient_id, name, age, gender, phone, blood_group, address });
+  // Two simultaneous inserts can generate the same PT-XXXX; on a unique-key
+  // conflict (Postgres error 23505) regenerate and retry.
+  for (let attempt = 1; ; attempt++) {
+    const unique_patient_id = await patientRepo.generateUniquePatientId(clinicId);
+    try {
+      return await patientRepo.create({ clinic_id: clinicId, unique_patient_id, name, age, gender, phone, blood_group, address });
+    } catch (err) {
+      if (err.code !== '23505' || attempt >= 3) throw err;
+    }
+  }
 }
 
 async function updatePatient(id, clinicId, data) {
